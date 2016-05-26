@@ -9,42 +9,63 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        // Grab our testing JSON file
-        let url = NSBundle.mainBundle().URLForResource("testing", withExtension: "json")
-        let data = NSData(contentsOfURL: url!)
-        
-        // Function for messing about with the JSON contents
-        func readJSONObject(object: [String: AnyObject]) {
-            
-            for film in films {
-                guard let title = user["title"] as? String,
-                    let date = user["year"] as? Int else { break }
-                    _ = title + " released \(date)."
-            }
-        }
-        
-        // Parse the JSON file into an object.
-        do {
-            let object = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-            if let dictionary = object as? [String: AnyObject] {
-                readJSONObject(dictionary)
-            }
-        } catch {
-            // Handle Error
-        }
-        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    // Grab our testing JSON file
+    let url = NSBundle.mainBundle().URLForResource("testing", withExtension: "json")
+    let data = NSData(contentsOfURL: url!)
+    
+    // Parse the JSON file into an object.
+    
+    do {
+    
+    let object = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+    
+    if let films = object["films"] as? [[String: AnyObject]] {
+    
+				for film in films {
+    
+				if let name = film["title"] as? String {
+    
+				let fullName = name.componentsSeparatedByString(" ")
+    
+				var clue = "";
+    
+    for names in fullName {
+    
+    let initial = String(names.characters.prefix(1));
+    
+    clue += initial;
+    clue += " ";
+    
+    }
+    
+				var output = "";
+    
+				output = name + " intials are: " + clue;
+    
+				print(output);
+    
+				}
+    
+    }
+    
+    }
+    
+    } catch {
+    
+    // Handle Error
+    
+    }
 
 }
 
